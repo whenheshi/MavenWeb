@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.dao.UserAttDetailDao">
+	<!-- 插入数据 -->
+	<insert id="insertUserAttDetail" parameterType="UserAttDetail" keyProperty="id">
+		insert into user_att_detail(name,dept,job,code,date,time,addr,detail,memo,mac)
+		values
+		(
+		#{name},
+		#{dept},
+		#{job},
+		#{code},
+		#{date},
+		#{time},
+		#{addr},
+		#{detail},
+		#{memo},
+		#{mac}
+		)
+	</insert>
+	<select id="checkIsExist" parameterType="UserAttDetail" resultType="String">
+		select 1 from user_att_detail
+		where code=#{code}
+		and date=#{date}
+		and time=#{time}
+	</select>
+	
+	<!-- 查询考勤明细 -->
+	<select id="findUserAttCount" parameterType="com.kh.vo.UserAttDetailQuery" resultType="Integer">
+		select count(1) from user_att_detail
+		where 1=1
+		<if test="name!=null and name!=''">
+			and name = #{name}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and dept like "%"#{dept}"%"
+		</if>
+		<if test="dateBegin!=null and dateBegin!=''">
+			and date &gt;= #{dateBegin}
+		</if>
+		<if test="dateEnd!=null and dateEnd!=''">
+			and date &lt;= #{dateEnd}
+		</if>
+	</select>
+	
+	<!-- 查询考勤明细 -->
+	<select id="findUserAttDetail" parameterType="com.kh.vo.UserAttDetailQuery" resultType="com.kh.model.UserAttDetail">
+		select a.name,a.dept,a.job,a.code,a.date,a.time,a.addr,a.detail,a.memo,a.mac,b.onjob,b.leavejob 
+			from user_att_detail a 
+		inner join employee_info b on a.code = b.code
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name = #{name}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and a.dept like "%"#{dept}"%"
+		</if>
+		<if test="dateBegin!=null and dateBegin!=''">
+			and a.date &gt;= #{dateBegin}
+		</if>
+		<if test="dateEnd!=null and dateEnd!=''">
+			and a.date &lt;= #{dateEnd}
+		</if>
+		<if test="employees!=null and employees.size()>0">
+			and b.code in 
+			<foreach item="item" index="index" collection="employees"  open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+		</if>
+		
+		limit #{start},#{pageSize}
+	</select>
+	
+	<select id="findLastUpdateDate" resultType="java.util.Date">
+		select max(date) from user_att_detail 
+	</select>
+</mapper>

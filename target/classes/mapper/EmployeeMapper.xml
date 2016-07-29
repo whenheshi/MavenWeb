@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.dao.EmployeeDao">
+	<select id="checkEmployeeExist" parameterType="com.kh.vo.EmployeeQuery" resultType="String">
+		select 1 from employee_info
+		where code=#{code}
+	</select>
+	
+	<select id="checkEmpDeptExist" parameterType="com.kh.vo.EmployeeQuery" resultType="String">
+		select 1 from employee_dept
+		where code=#{code}
+		and dept=#{dept}
+		and branch=#{branch}
+	</select>
+	
+	<!-- 查询考勤明细 -->
+	<select id="findEmployeeCount" parameterType="com.kh.vo.EmployeeQuery" resultType="Integer">
+		select count(1) 
+		  from employee_info a 
+		 left join employee_dept b on a.code=b.code
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name = #{name}
+		</if>
+		<if test="code!=null and code!=''">
+			and a.code = #{code}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and b.dept = #{dept}
+		</if>
+		<if test="branch!=null and branch!=''">
+			and b.branch = #{branch}
+		</if>
+	</select>
+	
+	<!-- 查询考勤明细 -->
+	<select id="findEmployee" parameterType="com.kh.vo.EmployeeQuery" resultType="com.kh.vo.EmployeeQuery">
+		select a.name,a.code,b.dept,b.branch,a.onjob,a.leavejob 
+		 from employee_info a 
+		 left join employee_dept b on a.code=b.code
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name = #{name}
+		</if>
+		<if test="code!=null and code!=''">
+			and a.code = #{code}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and b.dept = #{dept}
+		</if>
+		<if test="branch!=null and branch!=''">
+			and b.branch = #{branch}
+		</if>
+		<if test="empCodes!=null and empCodes.size()>0">
+			and a.code in 
+			<foreach item="item" index="index" collection="empCodes"  open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+		</if>
+		<if test="branches!=null and branches.size()>0">
+			and b.branch in 
+			<foreach item="item" index="index" collection="branches"  open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+		</if>
+		order by b.dept,b.branch,a.name 
+		limit #{start},#{pageSize}
+	</select>
+	
+	<update id="updateEmployeeInfo" parameterType="com.kh.vo.EmployeeQuery">
+		update employee_info 
+		set onjob =#{onjob}
+			,leavejob =#{leavejob}
+		<if test="name!=null and name!=''">
+			,name =#{name}
+		</if>
+		 where code=#{code}
+	</update>
+	
+	<update id="updateEmployeeDept" parameterType="com.kh.vo.EmployeeQuery">
+		update employee_dept 
+		set code = code 
+		<if test="dept!=null">
+			,dept =#{dept}
+		</if>
+		<if test="branch!=null">
+			,branch =#{branch}
+		</if>
+		 where code=#{code}
+	</update>
+	
+	<!-- 插入员工明细-->
+	<insert id="insertEmployeeInfo" parameterType="com.kh.vo.EmployeeQuery">
+		insert into employee_info(name,code,onjob,leavejob)
+		values
+		(
+			#{name},
+			#{code},
+			#{onjob},
+			#{leavejob}
+		)
+	</insert>
+	
+	<!-- 插入员工部门-->
+	<insert id="insertEmployeeDept" parameterType="com.kh.vo.EmployeeQuery">
+		insert into employee_dept(code,dept,branch)
+		values
+		(
+			#{code},
+			#{dept},
+			#{branch}
+		)
+	</insert>
+	
+	<!-- 查询部门列表 -->
+	<select id="findOrgList" resultType="String">
+		select distinct dept from employee_dept order by dept
+	</select>
+	<!-- 查询办事处列表 -->
+	<select id="findBranchByDept" parameterType="String" resultType="String">
+		select distinct branch from employee_dept 
+		<if test="_parameter!=null and _parameter!=''">
+			where dept=#{org,jdbcType=VARCHAR}
+		</if>
+		order by branch
+	</select>
+	
+	<!-- 查询考勤明细 -->
+	<select id="findEmployeesByDeptAndBranch" parameterType="com.kh.vo.EmployeeQuery" resultType="com.kh.model.Employee">
+		select a.name,a.code,a.onjob,a.leavejob 
+		 from employee_info a 
+		 left join employee_dept b on a.code=b.code
+		where 1=1
+		<if test="dept!=null and dept!=''">
+			and b.dept = #{dept}
+		</if>
+		<if test="branch!=null and branch!=''">
+			and b.branch = #{branch}
+		</if>
+		<if test="branches!=null and branches.size()>0">
+			and b.branch in 
+			<foreach item="item" index="index" collection="branches"  open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+		</if>
+		order by b.dept,b.branch,a.name
+	</select>
+</mapper>

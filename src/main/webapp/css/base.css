@@ -1,0 +1,146 @@
+@CHARSET "UTF-8";
+body {
+	padding-left:2px;
+	padding-right:2px;
+}
+
+body,table {
+	font-size: 12px;
+}
+
+table,td {
+	font: 100% Arial, Helvetica, sans-serif;
+}
+
+h1 {
+	padding-top:.5em;
+	height:1.5em;
+	background: #e5f1f4;
+    color: #000;
+    text-align: center;
+    letter-spacing: .3em;
+}
+
+.title{
+	padding-top:.5em;
+	height:2em;
+	background: #e5f1f4;
+    color: #000;
+    text-align: center;
+    letter-spacing: .3em;
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+    width:100%;
+}
+
+h3 {
+	padding-top:.5em;
+	height:1.5em;
+	background: #e5f1f4;
+    color: #000;
+    text-align: center;
+    letter-spacing: .3em;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1em 0;
+}
+
+th,td {
+	text-align: left;
+	padding: .5em;
+	border: 1px solid #fff;
+}
+
+th {
+	background: #328aa4 url(../images/tr_back.gif) repeat-x;
+	color: #fff;
+}
+
+td {
+	background: #e5f1f4;
+}
+
+td select {
+	width:95%;
+}
+
+.table tr:nth-child(even) td {
+	background: #e5f1f4;
+}
+
+.table tr:nth-child(odd) td {
+	background: #f8fbfc;
+}
+
+th.over,tr.even th.over,tr.odd th.over {
+	background: #4a98af;
+}
+
+th.down,tr.even th.down,tr.odd th.down {
+	background: #bce774;
+}
+
+th.selected,tr.even th.selected,tr.odd th.selected {
+	
+}
+
+td.over,tr.even td.over,tr.odd td.over {
+	background: #ecfbd4;
+}
+
+td.down,tr.even td.down,tr.odd td.down {
+	background: #bce774;
+	color: #fff;
+}
+
+td.selected,tr.even td.selected,tr.odd td.selected {
+	background: #bce774;
+	color: #555;
+}
+
+td.empty,tr.odd td.empty,tr.even td.empty {
+	background: #fff;
+}
+
+.lableTd {
+	background: #fff;
+	border: 1px solid #e5f1f4;
+}
+
+button {
+	background-color: #328aa4;
+	color: #fff;
+	height:1.5em;
+	width: 1em;
+}
+
+input[type='file']{
+	background-color: #328aa4;
+	color: #fff;
+	height:1.5em;
+	width: 18em;
+}
+
+.ui-dialog table,
+.ui-dialog table tr,
+.ui-dialog tr td,
+.ui-dialog tr:nth-child(2n) {
+	border: 0 none;
+	background: transparent;
+}
+.ui-dialog td.ui-dialog-header {
+	border-bottom: 1px solid #E5E5E5;
+}
+
+tr.error{
+	color:red;
+	font-weight: bold !important;
+}
+
+tr.allcheck{
+	color:green;
+}

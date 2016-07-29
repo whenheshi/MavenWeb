@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.dao.EmpExptDao">
+	
+	<!-- 查询请假明细 -->
+	<select id="findEmpExptCount" parameterType="com.kh.vo.EmpExptQuery" resultType="Integer">
+		select count(1) 
+		  from employee_expt a 
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name = #{name}
+		</if>
+		<if test="code!=null and code!=''">
+			and a.code = #{code}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and a.dept like "%"#{dept}"%"
+		</if>
+		<if test="sdate!=null">
+			and a.edate &gt;= #{sdate}
+		</if>
+		<if test="edate!=null">
+			and a.sdate &lt;= #{edate}
+		</if>
+	</select>
+	
+	<!-- 查询请假明细 -->
+	<select id="findEmpExpt" parameterType="com.kh.vo.EmpExptQuery" resultType="com.kh.model.EmpExpt">
+		select a.code,a.name,a.dept,a.type,a.sdate,a.stime,a.edate,a.etime,a.hours,a.days,a.marks,a.operator,a.createdate 
+		 from employee_expt a 
+		where 1=1
+		<if test="name!=null and name!=''">
+			and a.name = #{name}
+		</if>
+		<if test="code!=null and code!=''">
+			and a.code = #{code}
+		</if>
+		<if test="dept!=null and dept!=''">
+			and a.dept like "%"#{dept}"%"
+		</if>
+		<if test="sdate!=null">
+			and a.edate &gt;= #{sdate}
+		</if>
+		<if test="edate!=null">
+			and a.sdate &lt;= #{edate}
+		</if>
+		<if test="employees!=null and employees.size()>0">
+			and a.code in 
+			<foreach item="item" index="index" collection="employees"  open="(" separator="," close=")">
+                  #{item}
+            </foreach>
+		</if>
+		order by a.dept,a.name,a.sdate
+		limit #{start},#{pageSize}
+	</select>
+	
+	<!-- 新增请假信息 -->
+	<insert id="insertEmpExptInfo" parameterType="com.kh.model.EmpExpt">
+		insert into employee_expt(code,name,dept,type,sdate,stime,edate,etime,hours,days,marks,operator,createdate)
+		values
+		(
+			#{code},
+			#{name},
+			#{dept},
+			#{type},
+			#{sdate},
+			#{stime},
+			#{edate},
+			#{etime},
+			#{hours},
+			#{days},
+			#{marks},
+			#{operator},
+			#{createdate}
+		)
+	</insert>
+	
+	<select id="checkEmpExptExist" parameterType="com.kh.model.EmpExpt" resultType="String">
+		select 1 from employee_expt 
+		where code=#{code} 
+		and type=#{type} 
+		and sdate=#{sdate} 
+		and stime=#{stime} 
+		and edate=#{edate} 
+		and etime=#{etime} 
+	</select>
+</mapper>
