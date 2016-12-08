@@ -60,7 +60,7 @@ public class DingTalkTest {
     }
     //获取部门列表
     public void dept(){
-   	 String httpOrgCreateTest = url + "department/list?access_token=4b82c6f3e0d53199b7280107d66469f7";  
+   	 String httpOrgCreateTest = url + "department/list?access_token=a39327dd346f3d2e9e972cc775104a9d";  
         String httpOrgCreateTestRtn = httpClientUtil.doGet(httpOrgCreateTest,null,charset);
         System.out.println("result:"+httpOrgCreateTestRtn);
    }
@@ -73,7 +73,7 @@ public class DingTalkTest {
     
     //获取部门成员详情
     public void deptUsers(){
-     	 String httpOrgCreateTest = url + "user/list?access_token=4b82c6f3e0d53199b7280107d66469f7&department_id=1945762&offset=0&size=100";  
+     	 String httpOrgCreateTest = url + "user/list?access_token=a39327dd346f3d2e9e972cc775104a9d&department_id=15129138";  
           String httpOrgCreateTestRtn = httpClientUtil.doGet(httpOrgCreateTest,null,charset);
           System.out.println("result:"+httpOrgCreateTestRtn);
      }
@@ -89,7 +89,7 @@ public class DingTalkTest {
       
     public static void main(String[] args){
     	DingTalkTest main = new DingTalkTest();  
-        main.token();  
+        main.deptUsers();  
     }  
 
 }
